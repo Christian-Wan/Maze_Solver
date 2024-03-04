@@ -8,7 +8,7 @@ public class Main {
         String[][] map = getMaze("Data/Map");
         ArrayList<String> solution = new ArrayList<>();
         solution.add("(0, 0)");
-        System.out.println(Path.solver(map, 0, 0, 0, 0, solution));
+        Path.solver(map, 0, 0, 0, 0, solution);
     }
 
     public static String[][] getMaze(String fileName) {
