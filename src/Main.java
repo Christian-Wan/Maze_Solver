@@ -7,8 +7,29 @@ public class Main {
     public static void main(String[] args) {
         String[][] map = getMaze("Data/Map");
         ArrayList<String> solution = new ArrayList<>();
+        String[][] mapCopy = new String[map.length][map[0].length];
+        for (int r = 0; r < map.length; r++) {
+            for (int c = 0; c < map[0].length; c++) {
+                mapCopy[r][c] = map[r][c];
+            }
+        }
         solution.add("(0, 0)");
-        Path.solver(map, 0, 0, 0, 0, solution);
+        System.out.println(Path.nonRecursiveSolver(map, 0, 0, 0, 0, solution));
+//        for (String[] row: map) {
+//            for (String thing: row) {
+//                System.out.print(thing);
+//            }
+//            System.out.println();
+//        }
+        solution.clear();
+        solution.add("(0, 0)");
+        Path.solver(mapCopy, 0, 0, 0, 0, solution);
+//        for (String[] row: map) {
+//            for (String thing: row) {
+//                System.out.print(thing);
+//            }
+//            System.out.println();
+//        }
     }
 
     public static String[][] getMaze(String fileName) {

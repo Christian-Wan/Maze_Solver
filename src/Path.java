@@ -44,6 +44,7 @@ public class Path {
             }
             else if (look.getPaths() == 0) {
 //                System.out.println("ASDKJHADSKASDH");
+                map[startY][startX] = "V";
                 int size = solution.size();
                 for (int i = lastIndex; i < size; i++) {
                     solution.remove(lastIndex);
@@ -83,6 +84,91 @@ public class Path {
         System.out.println(solution);
         return null;
     }
+
+
+    public static ArrayList<String> nonRecursiveSolver(String[][] map, int startX, int startY, int beenX, int beenY, ArrayList<String> solution) {
+        beenX = startX;
+        beenY = startY;
+        solution.add("(0, 0)");
+        int lastIndex = solution.size() - 1;
+
+        while (!(startY == map.length - 1 && startX == map[0].length - 1)) {
+            //This prints out the current state of the maze
+//            System.out.println();
+//            for (String[] row: map) {
+//                for (String thing: row) {
+//                    System.out.print(thing);
+//                }
+//                System.out.println();
+//            }
+//            System.out.println(solution);
+
+            Looker look = lookAround(map, startX, startY, beenX, beenY);
+//            System.out.println(startX + " " + startY + " " + look.getPaths());
+            if (look.getPaths() == 1) {
+
+                if (look.contains("UP")) {
+                    map[startY][startX] = "V";
+                    startY--;
+                }
+                if (look.contains("RIGHT")) {
+                    map[startY][startX] = "V";
+                    startX++;
+                }
+                if (look.contains("DOWN")) {
+                    map[startY][startX] = "V";
+                    startY++;
+                }
+                if (look.contains("LEFT")) {
+                    map[startY][startX] = "V";
+                    startX--;
+                }
+                solution.add("(" + startY + ", " + startX + ")");
+            }
+            else if (look.getPaths() == 0) {
+//                System.out.println("ASDKJHADSKASDH");
+                map[startY][startX] = "X";
+                startY = 0;
+                startX = 0;
+                int size = solution.size();
+                for (int i = lastIndex; i < size; i++) {
+                    solution.remove(lastIndex);
+                }
+                for (int r = 0; r < map.length; r++) {
+                    for (int c = 0; c < map[0].length; c++) {
+                        if (map[r][c].equals("V")) {
+                            map[r][c] = ".";
+                        }
+                    }
+                }
+            }
+            else {
+//                System.out.println(startY + " " + startX);
+//                System.out.println(Arrays.toString(look.getDirections()));
+                if (look.contains("UP")) {
+                    map[startY][startX] = "V";
+                    startY--;
+                }
+                else if (look.contains("RIGHT")) {
+                    map[startY][startX] = "V";
+                    startX++;
+                }
+                else if (look.contains("DOWN")) {
+                    map[startY][startX] = "V";
+                    startY++;
+                }
+                else if (look.contains("LEFT")) {
+                    map[startY][startX] = "V";
+                    startX--;
+                }
+                solution.add("(" + startY + ", " + startX + ")");
+            }
+        }
+        return solution;
+    }
+
+
+
 
     private static Looker lookAround(String[][] map, int startX, int startY, int beenX, int beenY) { //this bad
         int count = 0;
