@@ -4,9 +4,8 @@ import java.util.Arrays;
 public class Path {
     public Path() {}
 
-    public static ArrayList<String> solver(String[][] map, int startX, int startY, int beenX, int beenY, ArrayList<String> solution) {
-        beenX = startX;
-        beenY = startY;
+    public static ArrayList<String> solver(String[][] map, int startX, int startY, ArrayList<String> solution) {
+
 
         int lastIndex = solution.size() - 1;
 
@@ -21,25 +20,13 @@ public class Path {
 //            }
 //            System.out.println(solution);
 
-            Looker look = lookAround(map, startX, startY, beenX, beenY);
+            Looker look = lookAround(map, startX, startY);
 //            System.out.println(startX + " " + startY + " " + look.getPaths());
             if (look.getPaths() == 1) {
-                if (look.contains("UP")) {
-                    map[startY][startX] = "V";
-                    startY--;
-                }
-                if (look.contains("RIGHT")) {
-                    map[startY][startX] = "V";
-                    startX++;
-                }
-                if (look.contains("DOWN")) {
-                    map[startY][startX] = "V";
-                    startY++;
-                }
-                if (look.contains("LEFT")) {
-                    map[startY][startX] = "V";
-                    startX--;
-                }
+                map[startY][startX] = "V";
+                String newCords = updateCords(startX, startY, look);
+                startX = Integer.parseInt(newCords.substring(0, newCords.indexOf(":")));
+                startY = Integer.parseInt(newCords.substring(newCords.indexOf(":") + 1));
                 solution.add("(" + startY + ", " + startX + ")");
             }
             else if (look.getPaths() == 0) {
@@ -54,31 +41,28 @@ public class Path {
             else {
 //                System.out.println(startY + " " + startX);
 //                System.out.println(Arrays.toString(look.getDirections()));
+                map[startY][startX] = "V";
                 if (look.contains("UP")) {
 //                    System.out.println("UP");
-                    map[startY][startX] = "V";
                     solution.add("(" + (startY - 1) + ", " + startX + ")");
-
-                    solver(map, startX, startY - 1, startX, startY, solution);
+                    solver(map, startX, startY - 1, solution);
                 }
-                else if (look.contains("RIGHT")) {
+                if (look.contains("RIGHT")) {
 //                    System.out.println("RIGHT");
-                    map[startY][startX] = "V";
                     solution.add("(" + startY + ", " + (startX + 1)+ ")");
-                    solver(map, startX + 1, startY, startX, startY, solution);
+                    solver(map, startX + 1, startY, solution);
                 }
-                else if (look.contains("DOWN")) {
+                if (look.contains("DOWN")) {
 //                    System.out.println("DOWN");
-                    map[startY][startX] = "V";
                     solution.add("(" + (startY + 1) + ", " + startX + ")");
-                    solver(map, startX, startY + 1, startX, startY, solution);
+                    solver(map, startX, startY + 1, solution);
                 }
-                else if (look.contains("LEFT")) {
+                if (look.contains("LEFT")) {
 //                    System.out.println("LEFT");
-                    map[startY][startX] = "V";
                     solution.add("(" + startY + ", " + (startX - 1) + ")");
-                    solver(map, startX - 1, startY, startX, startY, solution);
+                    solver(map, startX - 1, startY, solution);
                 }
+
             }
         }
         System.out.println(solution);
@@ -86,9 +70,7 @@ public class Path {
     }
 
 
-    public static ArrayList<String> nonRecursiveSolver(String[][] map, int startX, int startY, int beenX, int beenY, ArrayList<String> solution) {
-        beenX = startX;
-        beenY = startY;
+    public static ArrayList<String> nonRecursiveSolver(String[][] map, int startX, int startY, ArrayList<String> solution) {
         solution.add("(0, 0)");
         int lastIndex = solution.size() - 1;
 
@@ -103,26 +85,14 @@ public class Path {
 //            }
 //            System.out.println(solution);
 
-            Looker look = lookAround(map, startX, startY, beenX, beenY);
+            Looker look = lookAround(map, startX, startY);
 //            System.out.println(startX + " " + startY + " " + look.getPaths());
-            if (look.getPaths() == 1) {
+            if (look.getPaths() >= 1) {
+                map[startY][startX] = "V";
+                String newCords = updateCords(startX, startY, look);
+                startX = Integer.parseInt(newCords.substring(0, newCords.indexOf(":")));
+                startY = Integer.parseInt(newCords.substring(newCords.indexOf(":") + 1));
 
-                if (look.contains("UP")) {
-                    map[startY][startX] = "V";
-                    startY--;
-                }
-                if (look.contains("RIGHT")) {
-                    map[startY][startX] = "V";
-                    startX++;
-                }
-                if (look.contains("DOWN")) {
-                    map[startY][startX] = "V";
-                    startY++;
-                }
-                if (look.contains("LEFT")) {
-                    map[startY][startX] = "V";
-                    startX--;
-                }
                 solution.add("(" + startY + ", " + startX + ")");
             }
             else if (look.getPaths() == 0) {
@@ -142,27 +112,6 @@ public class Path {
                     }
                 }
             }
-            else {
-//                System.out.println(startY + " " + startX);
-//                System.out.println(Arrays.toString(look.getDirections()));
-                if (look.contains("UP")) {
-                    map[startY][startX] = "V";
-                    startY--;
-                }
-                else if (look.contains("RIGHT")) {
-                    map[startY][startX] = "V";
-                    startX++;
-                }
-                else if (look.contains("DOWN")) {
-                    map[startY][startX] = "V";
-                    startY++;
-                }
-                else if (look.contains("LEFT")) {
-                    map[startY][startX] = "V";
-                    startX--;
-                }
-                solution.add("(" + startY + ", " + startX + ")");
-            }
         }
         return solution;
     }
@@ -170,7 +119,7 @@ public class Path {
 
 
 
-    private static Looker lookAround(String[][] map, int startX, int startY, int beenX, int beenY) { //this bad
+    private static Looker lookAround(String[][] map, int startX, int startY) { //this bad
         int count = 0;
         String[] directions = {"", "", "", ""};
         try { //up
@@ -200,4 +149,19 @@ public class Path {
         return new Looker(count, directions);
     }
 
+    private static String updateCords(int startX, int startY, Looker look) {
+        if (look.contains("UP")) {
+            startY--;
+        }
+        else if (look.contains("RIGHT")) {
+            startX++;
+        }
+        else if (look.contains("DOWN")) {
+            startY++;
+        }
+        else if (look.contains("LEFT")) {
+            startX--;
+        }
+        return startX + ":" + startY;
+    }
 }

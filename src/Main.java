@@ -14,7 +14,7 @@ public class Main {
             }
         }
         solution.add("(0, 0)");
-        System.out.println(Path.nonRecursiveSolver(map, 0, 0, 0, 0, solution));
+        System.out.println(Path.nonRecursiveSolver(map, 0, 0, solution));
 //        for (String[] row: map) {
 //            for (String thing: row) {
 //                System.out.print(thing);
@@ -23,13 +23,14 @@ public class Main {
 //        }
         solution.clear();
         solution.add("(0, 0)");
-        Path.solver(mapCopy, 0, 0, 0, 0, solution);
-//        for (String[] row: map) {
-//            for (String thing: row) {
-//                System.out.print(thing);
-//            }
-//            System.out.println();
-//        }
+        System.out.println("ASD");
+        Path.solver(mapCopy, 0, 0, solution);
+        for (String[] row: mapCopy) {
+            for (String thing: row) {
+                System.out.print(thing);
+            }
+            System.out.println();
+        }
     }
 
     public static String[][] getMaze(String fileName) {
